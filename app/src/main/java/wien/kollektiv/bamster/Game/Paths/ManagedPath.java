@@ -41,7 +41,8 @@ public class ManagedPath extends Path {
 	@Override
 	public void lineTo(float x, float y) {
 		super.lineTo(x, y);
-		addPointToPathPoints((int) x, (int) y);
+		mPathPoints.put((int) x,(int) y);
+		//addPointToPathPoints((int) x, (int) y);
 	}
 	
 	@Override
@@ -50,10 +51,16 @@ public class ManagedPath extends Path {
 		mPathPoints.put((int) x2, (int) y2);
 		//addPointToPathPoints((int) x2, (int) y2);
 	}
+
+    @Override
+    public void cubicTo(float x1, float y1, float x2, float y2, float x3, float y3) {
+        super.cubicTo(x1, y1, x2, y2, x3, y3);
+        mPathPoints.put((int)x3, (int)y3);
+    }
 	
 	private void addPointToPathPoints(int x, int y) {
 		//Füge nur jeden 3. Punkt zu mPathPoints hinzu
-		if(mCounter == 3) {
+		if(mCounter == 5) {
 			synchronized(mPathPoints) {
 				mPathPoints.put(x, y);
 				mCounter = 0;

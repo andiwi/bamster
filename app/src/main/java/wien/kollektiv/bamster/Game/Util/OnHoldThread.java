@@ -1,7 +1,8 @@
 package wien.kollektiv.bamster.Game.Util;
 
+import wien.kollektiv.bamster.Game.GameLoopThread;
 import wien.kollektiv.bamster.Game.Paths.ManagedPath;
-import android.graphics.Point;
+
 import android.view.MotionEvent;
 
 /**
@@ -17,15 +18,16 @@ public class OnHoldThread extends Thread implements Runnable {
 	private boolean running;
 	private MotionEvent event;
 	private int mCounter;
-	private Point mLastPoint;
+    private GameLoopThread mGameLoopThread;
 	
 	/**
 	 * Standardkonstruktor
 	 * 
 	 * @param path
 	 */
-	public OnHoldThread(ManagedPath path) {
+	public OnHoldThread(ManagedPath path, GameLoopThread gameLoopThread) {
 		this.path = path;
+        mGameLoopThread = gameLoopThread;
 		this.running = false;
 		mCounter = 0;
 	}
@@ -38,27 +40,21 @@ public class OnHoldThread extends Thread implements Runnable {
 	public void start(){
 		super.start();
 		path.moveTo(event.getX(), event.getY());
-		mLastPoint = new Point((int) event.getX(), (int) event.getY());
-		mCounter++;
 	}
-	
-	/**
-	 * jedes 5te Touchevent wird abgefragt und der Punkt in Path abgespeichert
-	 * Die Punkte dazwischen werden mittels quadTo berechnet
-	 */
+
 	@Override
 	public void run() {
 		while (running) {
-			//path.lineTo(event.getX(), event.getY());
-			
-			if(mCounter == 5) {
-				mCounter = 0;
-				path.quadTo(mLastPoint.x, mLastPoint.y , event.getX(), event.getY());
-				mLastPoint = new Point((int) event.getX(), (int)event.getY());
-			}else {
-				mCounter++;
-			}
-			
+            int mSpeed = mGameLoopThread.getSpeed();
+            int counterLimit = (mGameLoopThread.getSpeed() / 10) + 3; //abhängig von der Geschwindigkeit werden unterschiedlich viele Events zum zeichnen verwendet.
+
+            if(mCounter >= counterLimit) {
+                mCounter = 0;
+                path.lineTo(event.getX(), event.getY());
+            }else {
+                mCounter++;
+            }
+
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {

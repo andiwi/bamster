@@ -1,5 +1,6 @@
 package wien.kollektiv.bamster.Game.Paths;
 
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
+
+import static java.util.Map.Entry;
 
 /**
  * Managed alle Paths und bestimmt/kennt den Path unter dem Hamster
@@ -127,7 +130,7 @@ public class PathManager {
 			canvas.drawPath(path, mPaint);
 			
 			//FIXME NUR ZUM DEBUGGEN
-			/*
+            /*
 			Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 			paint.setStyle(Paint.Style.STROKE);
 			paint.setStrokeWidth(10);

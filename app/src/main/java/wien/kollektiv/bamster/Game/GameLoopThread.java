@@ -235,6 +235,17 @@ public class GameLoopThread extends Thread {
 				gameScoreTextView.setText(mScore + "");
 			}
 		});
+
+
+        //FIXME just for debugging
+        final int counterLimit = (mSpeed / 10) + 3;
+        // set speed to TextView
+        final TextView helperTextView = (TextView) ((Activity)mContext).getWindow().getDecorView().findViewById(R.id.helperTextView);
+        activity.runOnUiThread(new Runnable() {
+            public void run() {
+                helperTextView.setText("speed: " + mSpeed + " - counterLimit: " + counterLimit);
+            }
+        });
 	}
 	
 	/*public static Bitmap createBackgroundRepeater(int width, Bitmap src){  
@@ -270,7 +281,7 @@ public class GameLoopThread extends Thread {
 		case MotionEvent.ACTION_DOWN:
 			ManagedPath mPath = new ManagedPath();
 			mPathManager.addPath(mPath);
-			mOnHoldThread = new OnHoldThread(mPath);
+			mOnHoldThread = new OnHoldThread(mPath, this);
 			mOnHoldThread.setRunning(true);
 			mOnHoldThread.setEvent(e);
 			mOnHoldThread.start();
@@ -340,7 +351,7 @@ public class GameLoopThread extends Thread {
      * down if it's already running. Calling start() after this was most
      * recently called with false will result in an immediate shutdown.
      *
-     * @param b true to run, false to shut down
+     * @param run true to run, false to shut down
      */
     public void setRunning(boolean run) {
         // Do not allow mRun to be modified while any canvas operations
@@ -358,4 +369,8 @@ public class GameLoopThread extends Thread {
 	public void setSurfaceSize(int width, int height) {
 		// TODO Auto-generated method stub
 	}
+
+    public int getSpeed() {
+        return mSpeed;
+    }
 }
