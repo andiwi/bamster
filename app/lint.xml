@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<lint>
-    <issue id="SimpleDateFormat" severity="ignore" />
-    <issue id="WrongCall">
-        <ignore path="src/wien/kollektiv/bamster/GameLoopThread.java" />
-    </issue>
-</lint>
